@@ -34,14 +34,14 @@ header {
     font-size: 14px;
     border-radius: 20px;
     background-color: transparent;
-    border: 2px solid#786532;
+    border: 2px solid#72155e;
     padding: 10px 25px;
     transition: 0.2s ease;
     cursor: pointer;
     outline: none;
 }
 .btn-card:hover {
-    background-color: wheat;
+    background-color: rgb(197, 148, 178);
 }
 .products{
     display: flex;
