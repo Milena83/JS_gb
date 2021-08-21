@@ -1,20 +1,38 @@
+const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+
+let getRequest = (url) => {
+  return new Promise((resolve, reject) => {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4) {
+        if (xhr.status !== 200) {
+          reject('Error');
+        } else {
+          resolve(xhr.responseText);
+        }
+      }
+    };
+    xhr.send();
+  })
+};
+
 class ProductList {
   constructor(container = '.products') {
     this.container = container;
     this.goods = [];
     this.allProducts = [];
-    this._fetchProducts();
-    this._render();
-    this.totalCost();
+    this._getProducts()
+      .then(data => {
+        this.goods = [...data];
+        this._render();
+      });
 
   }
-  _fetchProducts() {
-    this.goods = [
-      { id: 1, title: 'Notebook', price: 20000 },
-      { id: 2, title: 'Mouse', price: 1500 },
-      { id: 3, title: 'Keyboard', price: 5000 },
-      { id: 4, title: 'Gamepad', price: 4500 },
-    ]
+  _getProducts() {
+    return fetch(`${API}/catalogData.json`)
+      .then(response => response.json())
+      .catch(error => console.log(error));
   }
 
   _render() {
@@ -39,7 +57,7 @@ class ProductList {
 
 class ProductItem {
   constructor(product, img = 'http://placehold.it/200x150/a2345f') {
-    this.title = product.title;
+    this.title = product.product_name;
     this.price = product.price;
     this.id = product.id;
     this.img = img;
@@ -55,6 +73,7 @@ class ProductItem {
               </div>
             </div>`;
   }
+
 }
 
 new ProductList();
